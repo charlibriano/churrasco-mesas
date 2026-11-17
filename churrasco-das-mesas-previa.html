@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Churrasco das Mesas 🔥</title>
+<meta name="theme-color" content="#140e0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#140e0a; --bg2:#1d1510; --card:#241a13; --card2:#2e2219; --line:#3d2d21;
+    --ink:#f7ecdd; --muted:#b39d86; --brasa:#ff6a13; --brasa2:#ff9a2e; --ouro:#ffc23d;
+    --ok:#37b24d; --no:#f03e3e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);
+       background:radial-gradient(120% 60% at 80% 0%,#3a1a08 0%,transparent 60%),var(--bg);
+       display:flex;flex-direction:column;max-width:480px;margin:0 auto;-webkit-tap-highlight-color:transparent}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:4px;padding:14px 4px 0 14px;overflow:hidden}
+  .hero-txt{position:relative;z-index:2;padding-bottom:12px;min-width:0}
+  .kicker{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ouro);
+          border:1px solid rgba(255,194,61,.35);border-radius:999px;padding:4px 10px;margin-bottom:8px;background:rgba(255,194,61,.07)}
+  .hero h1{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;font-size:40px;line-height:.95;letter-spacing:.01em;text-transform:uppercase}
+  .hero h1 em{font-style:normal;display:block;font-size:28px;
+              background:linear-gradient(90deg,var(--ouro),var(--brasa) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grill{flex:none;width:158px;height:auto;margin-bottom:-6px;z-index:1}
+  .fl{transform-box:fill-box;transform-origin:50% 100%;animation:flick 1.1s ease-in-out infinite alternate}
+  .fl.b{animation-duration:.8s;animation-delay:-.3s}.fl.c{animation-duration:1.3s;animation-delay:-.6s}
+  @keyframes flick{0%{transform:scaleY(.82) scaleX(1.04)}100%{transform:scaleY(1.12) scaleX(.94)}}
+  .fumo{animation:fumo 4.5s ease-out infinite;opacity:0}
+  .fumo.b{animation-delay:-1.5s}.fumo.c{animation-delay:-3s}
+  @keyframes fumo{0%{transform:translateY(8px);opacity:0}25%{opacity:.45}100%{transform:translateY(-40px);opacity:0}}
+  .brasa{animation:glow 1.6s ease-in-out infinite alternate}
+  @keyframes glow{from{opacity:.55}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.fl,.fumo,.brasa{animation:none}.fumo{opacity:.3}}
+
+  /* ===== INFO ===== */
+  .chips{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:0 12px;position:relative;z-index:3}
+  .chip{display:flex;gap:9px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 10px;color:var(--ink);text-decoration:none;min-width:0}
+  .chip svg{flex:none;width:30px;height:30px;padding:6px;border-radius:9px;background:rgba(255,106,19,.14);color:var(--brasa2)}
+  .chip b{display:block;font-size:14.5px;line-height:1.15}
+  .chip:first-child b{white-space:nowrap}
+  .chip span{display:block;font-size:11.5px;color:var(--muted);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chip.mapa span{color:var(--brasa2)}
+  .regra{margin:8px 12px 0;padding:9px 12px;border-radius:12px;font-size:13.5px;
+         background:linear-gradient(90deg,rgba(255,106,19,.18),rgba(255,194,61,.08));border:1px solid rgba(255,106,19,.3)}
+  .regra b{color:var(--ouro)}
+
+  /* ===== ABAS ===== */
+  nav{display:flex;gap:4px;margin:10px 12px 0;padding:4px;background:var(--bg2);border:1px solid var(--line);border-radius:12px}
+  nav button{flex:1;border:0;border-radius:9px;padding:9px;font:700 13.5px "DM Sans",sans-serif;background:transparent;color:var(--muted);cursor:pointer;transition:.2s}
+  nav button.on{background:linear-gradient(135deg,var(--brasa),var(--brasa2));color:#1a0d04;box-shadow:0 4px 14px rgba(255,106,19,.35)}
+  main{flex:1;overflow:auto;padding:6px 12px 16px}
+  .tela{display:none}.tela.on{display:block;animation:in .25s ease}
+  @keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ===== FORM (passo a passo) ===== */
+  input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:13px 14px;font:500 17px "DM Sans",sans-serif;background:var(--bg2);color:var(--ink)}
+  input::placeholder{color:#7d6a58}
+  input:focus{outline:none;border-color:var(--brasa);box-shadow:0 0 0 3px rgba(255,106,19,.2)}
+  .wiz{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:4px}
+  .prog{display:flex;gap:5px;margin-bottom:12px}
+  .prog i{flex:1;height:5px;border-radius:5px;background:var(--line);transition:.3s}
+  .prog i.on{background:linear-gradient(90deg,var(--brasa),var(--ouro))}
+  .passo{display:none}.passo.on{display:block}
+  .de-frente{animation:entraD .3s ease}.de-tras{animation:entraE .3s ease}
+  @keyframes entraD{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+  @keyframes entraE{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+  .pergunta{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;font-size:26px;line-height:1.05;text-transform:uppercase}
+  .dica{font-size:13px;color:var(--muted);margin:3px 0 12px}
+  .grandes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .op{position:relative;border:1.5px solid var(--line);background:var(--bg2);border-radius:14px;padding:14px 8px;font:700 15px "DM Sans",sans-serif;color:var(--ink);cursor:pointer;text-align:center;transition:transform .15s,border-color .15s,background .15s}
+  .op .e{display:block;font-size:30px;line-height:1.1;margin-bottom:4px}
+  .ic{width:1.15em;height:1.15em;vertical-align:-.2em}
+  .op .e .ic{width:34px;height:34px;vertical-align:middle}
+  .outro{margin-top:8px}
+  .op small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+  .op:active{transform:scale(.97)}
+  .op.on{border-color:var(--ouro);background:rgba(255,194,61,.14);color:var(--ouro)}
+  .op.on::after{content:"✓";position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--ouro);color:#1a0d04;font-size:12px;line-height:18px}
+  .op.sim.on{border-color:var(--ok);background:rgba(55,178,77,.16);color:#8ce99a}.op.sim.on::after{background:var(--ok);color:#fff}
+  .op.nao.on{border-color:var(--no);background:rgba(240,62,62,.14);color:#ff8787}.op.nao.on::after{background:var(--no);color:#fff}
+  .op:disabled{opacity:.38;cursor:not-allowed}
+  .op.mini{padding:9px 6px;font-size:13px}.op.mini .e{font-size:22px}
+  .op.full{grid-column:1/-1}
+  .stepper{display:flex;align-items:center;justify-content:center;gap:26px;padding:6px 0}
+  .stepper button{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink);font:700 26px "DM Sans",sans-serif;cursor:pointer}
+  .stepper button:active{transform:scale(.94)}
+  .stepper b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:60px;min-width:70px;text-align:center;color:var(--ouro)}
+  .aviso{font-size:13px;margin-bottom:10px;padding:8px 10px;border-radius:10px;background:rgba(255,194,61,.1);border:1px solid rgba(255,194,61,.3);color:var(--ouro);display:none}
+  .aviso.on{display:block}
+  .rev{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:4px 12px;margin-bottom:10px}
+  .rev div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .rev div:last-child{border:0}
+  .rev span{color:var(--muted)}.rev b{text-align:right}
+  .acoes{display:flex;gap:8px;margin-top:14px}
+  .btn2{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:13px;padding:13px 16px;font:700 15px "DM Sans",sans-serif;cursor:pointer}
+  .prim{flex:1;border:0;border-radius:13px;padding:14px;font:700 16px "DM Sans",sans-serif;cursor:pointer;color:#1a0d04;
+        background:linear-gradient(135deg,var(--brasa),var(--ouro));box-shadow:0 6px 20px rgba(255,106,19,.3)}
+  .prim:disabled{opacity:.6}
+  .fim{text-align:center;padding:8px 0 2px}
+  .fim .big{font-size:64px;display:inline-block;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:none}}
+  .fim p{color:var(--muted);font-size:14px;margin-top:4px}
+  .msg{margin-top:10px;padding:10px 12px;border-radius:11px;font-size:14px;display:none}
+  .msg.on{display:block}
+  .msg.erro{background:rgba(240,62,62,.14);color:#ff8787;border:1px solid rgba(240,62,62,.4)}
+  .msg.ok{background:rgba(55,178,77,.14);color:#8ce99a;border:1px solid rgba(55,178,77,.4)}
+
+  /* ===== QUEM VAI (cartões) ===== */
+  .resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:4px 0 2px}
+  .resumo div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 4px;text-align:center}
+  .resumo div:first-child{background:linear-gradient(135deg,rgba(255,106,19,.24),rgba(255,194,61,.08));border-color:rgba(255,106,19,.4)}
+  .resumo b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:28px;line-height:1.1}
+  .resumo div:first-child b{color:var(--ouro)}
+  .resumo span{font-size:11px;color:var(--muted)}
+  h3{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:13px 0 6px}
+  .pess{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 11px;margin-bottom:6px;animation:in .3s ease both}
+  .av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 16px "DM Sans",sans-serif;color:#1a0d04}
+  .pi{flex:1;min-width:0}
+  .pi>b{font-size:15px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .tg{font-size:11.5px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;white-space:nowrap}
+  .tg.dest{border-color:rgba(255,194,61,.4);color:var(--ouro)}
+  .sug{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+  .itg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .itc{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--card);border:1px solid var(--line);min-width:0}
+  .itc .e{font-size:22px;flex:none}
+  .itc div{min-width:0}
+  .itc b{display:block;font-size:12.5px;line-height:1.2}
+  .itc span{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .itc.livre span{color:#8ce99a}
+  .itc.ocupado{border-color:rgba(255,194,61,.3)}.itc.ocupado span{color:var(--ouro)}
+  .naos{display:flex;flex-wrap:wrap;gap:6px}
+  .nchip{font-size:13px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--muted)}
+  .vazio{text-align:center;color:var(--muted);font-size:13px;padding:10px;border:1px dashed var(--line);border-radius:12px}
+  footer{text-align:center;font-size:11px;color:#6e5a48;padding:4px 0 10px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-txt">
+    <span class="kicker">🔥 Bora pra brasa</span>
+    <h1>Churrasco<em>das Mesas</em></h1>
+  </div>
+
+  <!-- Ilustração da churrasqueira (desenhada em SVG, sem imagem externa) -->
+  <svg class="grill" viewBox="0 0 220 170" aria-hidden="true">
+    <defs>
+      <radialGradient id="gGlow" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="#ff7a1a" stop-opacity=".55"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+      <linearGradient id="gFogo" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff3d00"/><stop offset=".55" stop-color="#ff8a00"/><stop offset="1" stop-color="#ffd54a"/></linearGradient>
+      <linearGradient id="gCaixa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2b22"/><stop offset="1" stop-color="#1c1410"/></linearGradient>
+      <linearGradient id="gLing" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8573a"/><stop offset="1" stop-color="#7a2614"/></linearGradient>
+    </defs>
+    <ellipse cx="110" cy="105" rx="105" ry="55" fill="url(#gGlow)" class="brasa"/>
+    <!-- fumaça -->
+    <path class="fumo"   d="M70 60 q-8 -12 0 -22 q8 -10 0 -22" stroke="#d9cbbb" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path class="fumo b" d="M112 58 q-8 -12 0 -22 q8 -10 0 -22" stroke="#d9cbbb" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path class="fumo c" d="M152 60 q-8 -12 0 -22 q8 -10 0 -22" stroke="#d9cbbb" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- chamas -->
+    <path class="fl"   d="M58 102 q-9 -14 0 -26 q2 9 7 10 q2 -9 -1 -16 q12 10 8 32 z" fill="url(#gFogo)"/>
+    <path class="fl b" d="M100 102 q-10 -16 1 -30 q2 10 7 12 q3 -10 0 -19 q14 12 9 37 z" fill="url(#gFogo)"/>
+    <path class="fl c" d="M146 102 q-9 -14 0 -26 q2 9 7 10 q2 -9 -1 -16 q12 10 8 32 z" fill="url(#gFogo)"/>
+    <!-- espeto com carne, cebola e pimentão -->
+    <line x1="14" y1="84" x2="124" y2="84" stroke="#d8cfc4" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="14" cy="84" r="4" fill="#d8cfc4"/>
+    <rect x="26" y="74" width="17" height="19" rx="4" fill="#8e3b1c"/><path d="M29 79 h11 M29 85 h11" stroke="#4e1c0c" stroke-width="1.6"/>
+    <rect x="45" y="76" width="9" height="16" rx="3" fill="#e9d8a6"/>
+    <rect x="56" y="74" width="17" height="19" rx="4" fill="#9a4321"/><path d="M59 79 h11 M59 85 h11" stroke="#4e1c0c" stroke-width="1.6"/>
+    <rect x="75" y="76" width="9" height="16" rx="3" fill="#4f8a3a"/>
+    <rect x="86" y="74" width="17" height="19" rx="4" fill="#8e3b1c"/><path d="M89 79 h11 M89 85 h11" stroke="#4e1c0c" stroke-width="1.6"/>
+    <rect x="105" y="76" width="9" height="16" rx="3" fill="#d9480f"/>
+    <!-- linguiças -->
+    <rect x="130" y="80" width="56" height="13" rx="6.5" fill="url(#gLing)"/>
+    <path d="M142 82 l3 9 M156 82 l3 9 M170 82 l3 9" stroke="#4a160a" stroke-width="1.6"/>
+    <rect x="136" y="68" width="52" height="12" rx="6" fill="url(#gLing)"/>
+    <path d="M148 70 l3 8 M162 70 l3 8 M175 70 l3 8" stroke="#4a160a" stroke-width="1.6"/>
+    <!-- grelha -->
+    <rect x="22" y="94" width="176" height="6" rx="3" fill="#5b4a3e"/>
+    <rect x="22" y="94" width="176" height="2" rx="1" fill="#8d7869"/>
+    <!-- caixa e brasas -->
+    <path d="M30 100 H190 L176 134 H44 Z" fill="url(#gCaixa)" stroke="#4a382c" stroke-width="1.5"/>
+    <g class="brasa"><circle cx="62" cy="104" r="4" fill="#ff6a13"/><circle cx="80" cy="105" r="3" fill="#ffb02e"/><circle cx="104" cy="104" r="4.5" fill="#ff6a13"/><circle cx="126" cy="105" r="3" fill="#ffb02e"/><circle cx="150" cy="104" r="4" fill="#ff6a13"/></g>
+    <!-- pés -->
+    <path d="M62 134 L52 166 M158 134 L168 166" stroke="#4a382c" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+</header>
+
+<div class="chips">
+  <div class="chip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    <div><b>Sex, 20/11</b><span>às 19h</span></div>
+  </div>
+  <a class="chip mapa" id="mapa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Rua+Martinez+Camelo+de+Souza+378+Novo+Tupi+Belo+Horizonte">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <div style="min-width:0"><b>R. Martinez Camelo de Souza, 378</b><span>Novo Tupi · abrir no mapa ↗</span></div>
+  </a>
+</div>
+<div class="regra">🥩 Cada um leva <b>500g de carne por pessoa</b> + suco ou refri 🥤</div>
+
+<nav>
+  <button id="tabConf" class="on" onclick="aba('conf')">Confirmar presença</button>
+  <button id="tabLista" onclick="aba('lista')">Quem vai (<span id="nTab">…</span>)</button>
+</nav>
+
+<main>
+  <!-- ===== TELA 1: passo a passo ===== -->
+  <section id="conf" class="tela on">
+    <div class="wiz">
+      <div class="prog" id="prog"></div>
+
+      <div class="passo on" data-p="nome">
+        <div class="pergunta">Quem é você? 👋</div>
+        <div class="dica">Digite seu nome para confirmar.</div>
+        <input type="text" id="nome" maxlength="60" placeholder="Seu nome" autocomplete="name" enterkeyhint="next">
+        <div class="acoes"><button class="prim" onclick="proximo()">Próximo →</button></div>
+      </div>
+
+      <div class="passo" data-p="vai">
+        <div class="aviso" id="avisoJa">Você já respondeu. Pode alterar o que quiser 👍</div>
+        <div class="pergunta">Bora, <span id="primeiroNome"></span>? 🔥</div>
+        <div class="dica">Você vai no churrasco?</div>
+        <div class="grandes">
+          <button type="button" class="op sim" id="bSim" onclick="setVai(true)"><span class="e">🤩</span>Vou!</button>
+          <button type="button" class="op nao" id="bNao" onclick="setVai(false)"><span class="e">😢</span>Não vou</button>
+        </div>
+        <div class="acoes"><button class="btn2" onclick="voltar()">←</button><button class="prim" onclick="proximo()">Próximo →</button></div>
+      </div>
+
+      <div class="passo" data-p="pessoas">
+        <div class="pergunta">Quantas pessoas? 👥</div>
+        <div class="dica">Contando com você.</div>
+        <div class="stepper">
+          <button type="button" onclick="mudarPessoas(-1)" aria-label="menos">−</button>
+          <b id="nPess">1</b>
+          <button type="button" onclick="mudarPessoas(1)" aria-label="mais">+</button>
+        </div>
+        <div class="acoes"><button class="btn2" onclick="voltar()">←</button><button class="prim" onclick="proximo()">Próximo →</button></div>
+      </div>
+
+      <div class="passo" data-p="carne">
+        <div class="pergunta">Qual carne vai levar? 🥩</div>
+        <div class="dica">Opcional · pode marcar mais de uma.</div>
+        <div class="grandes" id="carnes"></div>
+        <div class="acoes"><button class="btn2" onclick="voltar()">←</button><button class="prim" id="btnCarne" onclick="proximo()">Pular →</button></div>
+      </div>
+
+      <div class="passo" data-p="item">
+        <div class="pergunta">Quer levar algo a mais? 🎁</div>
+        <div class="dica">Opcional · cada item fica com uma pessoa só.</div>
+        <div class="grandes" id="itens"></div>
+        <input type="text" id="outro" class="outro" maxlength="100" placeholder="✍️ Vai levar outra coisa? Escreva aqui">
+        <div class="acoes"><button class="btn2" onclick="voltar()">←</button><button class="prim" onclick="proximo()">Próximo →</button></div>
+      </div>
+
+      <div class="passo" data-p="revisao">
+        <div class="pergunta">Tudo certo? ✅</div>
+        <div class="dica">Confira antes de enviar.</div>
+        <div class="rev" id="rev"></div>
+        <input type="text" id="sugestao" maxlength="200" placeholder="💡 Sugestão (farofa, vinagrete…) — opcional">
+        <div class="acoes"><button class="btn2" onclick="voltar()">←</button><button class="prim" id="enviar" onclick="enviar()">Enviar resposta</button></div>
+      </div>
+
+      <div class="passo" data-p="fim">
+        <div class="fim">
+          <span class="big" id="fimEmoji">🔥</span>
+          <div class="pergunta" id="fimTitulo">Presença confirmada!</div>
+          <p id="fimTexto">Até sexta!</p>
+        </div>
+        <div class="acoes"><button class="btn2" onclick="irPara('nome',-1)">Alterar</button><button class="prim" onclick="aba('lista')">Ver quem vai →</button></div>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </div>
+  </section>
+
+  <!-- ===== TELA 2: quem vai ===== -->
+  <section id="lista" class="tela">
+    <div class="resumo">
+      <div><b id="nPessoas">–</b><span>confirmados</span></div>
+      <div><b id="nLivres">–</b><span>itens livres</span></div>
+      <div><b id="nNao">–</b><span>não vão</span></div>
+    </div>
+    <h3>✅ Quem vai</h3>
+    <div id="listaSim"></div>
+    <h3>🎁 Itens a mais</h3>
+    <div class="itg" id="listaItens"></div>
+    <h3>😢 Não vão</h3>
+    <div class="naos" id="listaNao"></div>
+  </section>
+</main>
+<footer>Churrasco das Mesas · 20/11 🌻</footer>
+
+<script>
+// PRÉVIA: simula o servidor com dados de exemplo (não grava nada de verdade)
+(function(){
+  const itens=["Amendoim japonês","Sobremesa 1","Sobremesa 2","Pcts pão de alho","Salada de folhas","Arroz carreteiro"];
+  const carnes=["Boi","Porco","Frango","Linguiça"];
+  let resp=[{nome:"Ana",vai:true,pessoas:2,item:"Sobremesa 1",sugestao:"",carne:"Boi, Linguiça"},{nome:"Bruno",vai:true,pessoas:1,item:"Pcts pão de alho",sugestao:"levo vinagrete também",carne:"",outro:"Gelo"},{nome:"Carla",vai:false,pessoas:0,item:"",sugestao:""}];
+  const n=s=>String(s).trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const ok=o=>Promise.resolve({ok:true,json:()=>Promise.resolve(o)});
+  window.fetch=function(u,o){
+    if(!o||o.method!=="POST") return ok({ok:true,itens,carnes,respostas:resp});
+    const d=JSON.parse(o.body);
+    const dono=d.item&&resp.find(r=>r.vai&&r.item===d.item&&n(r.nome)!==n(d.nome));
+    if(dono) return ok({ok:false,erro:'"'+d.item+'" já foi escolhido por '+dono.nome+'. Escolha outro.',itens,carnes,respostas:resp});
+    const i=resp.findIndex(r=>n(r.nome)===n(d.nome));
+    const novo={nome:d.nome,vai:d.vai,pessoas:d.pessoas,item:d.item,sugestao:d.sugestao,carne:(d.carne||[]).join(", "),outro:d.outro||""};
+    if(i>=0) resp[i]=novo; else resp.push(novo);
+    return ok({ok:true,itens,carnes,respostas:resp,atualizado:i>=0});
+  };
+})();
+</script>
+<script>
+// ===== CONFIGURAÇÃO =====
+// Cole aqui a URL do App da Web do Apps Script (termina em /exec):
+const SCRIPT_URL = "https://previa";
+
+// Emoji de cada carne/item (se trocar os nomes no Code.gs, ajuste aqui também)
+const EMOJI = {"Boi":"🐂","Porco":"🐖","Frango":"🍗",
+  "Amendoim japonês":"🥜","Sobremesa 1":"🍰","Sobremesa 2":"🍮","Pcts pão de alho":"🥖","Salada de folhas":"🥗","Arroz carreteiro":"🍚"};
+const em = k => EMOJI[k] || "🎁";
+// Ícone desenhado (o celular não tem emoji de linguiça)
+const DESENHO = {
+  "Linguiça": '<svg viewBox="0 0 32 32" class="ic"><path d="M5 22c3-7 8-10.5 13.5-10.5 3 0 5.5 1 7.5 3" fill="none" stroke="#6e2210" stroke-width="9.5" stroke-linecap="round"/><path d="M5 22c3-7 8-10.5 13.5-10.5 3 0 5.5 1 7.5 3" fill="none" stroke="#c4512f" stroke-width="7.5" stroke-linecap="round"/><path d="M8.5 18c2-3.2 5.2-5.3 9-5.8" stroke="#ee9a73" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M15.6 12.1v6.4" stroke="#6e2210" stroke-width="1.6"/><path d="M10 16.5l2.2 3.6M20.5 12l1 4.4M24 13.2l-.2 4" stroke="#5a1a0b" stroke-width="1.2" stroke-linecap="round"/><path d="M3.2 24.6l-1.6 1.6M27.6 13.3l1.8-1.2" stroke="#e9d8a6" stroke-width="1.6" stroke-linecap="round"/></svg>'
+};
+// Devolve um <span> com o desenho ou o emoji do item/carne
+function icone(nome, cls){
+  const s = el("span", cls || "");
+  if (DESENHO[nome]) s.innerHTML = DESENHO[nome]; else s.textContent = em(nome);
+  return s;
+}
+
+let estado = { itens: [], carnes: [], respostas: [] };
+let vai = null;            // true / false / null
+let pessoas = 1;
+let itemEscolhido = "";    // "" = nenhum
+let carnesEscolhidas = []; // ex.: ["Boi","Linguiça"]
+let passo = "nome";
+
+const FLUXO_SIM = ["nome","vai","pessoas","carne","item","revisao"];
+const FLUXO_NAO = ["nome","vai","revisao"];
+const fluxo = () => vai === false ? FLUXO_NAO : FLUXO_SIM;
+
+const $ = id => document.getElementById(id);
+const norm = s => String(s).trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+
+// Mensagens (e erros) direto na tela
+function mostrar(texto, tipo){ const m = $("msg"); m.textContent = texto; m.className = "msg on " + tipo; }
+function limparMsg(){ $("msg").className = "msg"; }
+
+function aba(qual){
+  $("conf").classList.toggle("on", qual === "conf");
+  $("lista").classList.toggle("on", qual === "lista");
+  $("tabConf").classList.toggle("on", qual === "conf");
+  $("tabLista").classList.toggle("on", qual === "lista");
+}
+
+// ===== navegação do passo a passo =====
+function desenharProgresso(){
+  const f = fluxo(), box = $("prog");
+  const atual = passo === "fim" ? f.length : f.indexOf(passo);
+  box.innerHTML = "";
+  f.forEach((_, i) => box.appendChild(el("i", i <= atual ? "on" : "")));
+}
+function irPara(p, dir){
+  passo = p;
+  document.querySelectorAll(".passo").forEach(sec => {
+    const on = sec.dataset.p === p;
+    sec.classList.toggle("on", on);
+    sec.classList.remove("de-frente", "de-tras");
+    if (on){ void sec.offsetWidth; sec.classList.add(dir < 0 ? "de-tras" : "de-frente"); }
+  });
+  limparMsg();
+  if (p === "vai") $("primeiroNome").textContent = $("nome").value.trim().split(" ")[0];
+  if (p === "carne") desenharCarnes();
+  if (p === "item") desenharItens();
+  if (p === "revisao") desenharRevisao();
+  desenharProgresso();
+}
+function proximo(){
+  if (passo === "nome"){
+    if (!$("nome").value.trim()) return mostrar("Digite seu nome.", "erro");
+    preencherSeJaRespondeu();
+  }
+  if (passo === "vai" && vai === null) return mostrar("Escolha se você vai ou não.", "erro");
+  const f = fluxo();
+  irPara(f[f.indexOf(passo) + 1], 1);
+}
+function voltar(){
+  const f = fluxo(), i = f.indexOf(passo);
+  if (i > 0) irPara(f[i - 1], -1);
+}
+
+function setVai(v){
+  vai = v;
+  $("bSim").classList.toggle("on", v === true);
+  $("bNao").classList.toggle("on", v === false);
+  desenharProgresso();
+  setTimeout(() => { if (passo === "vai" && vai === v) proximo(); }, 280); // avança sozinho
+}
+function mudarPessoas(d){
+  pessoas = Math.max(1, Math.min(20, pessoas + d));
+  $("nPess").textContent = pessoas;
+}
+
+// ===== carnes =====
+function desenharCarnes(){
+  const box = $("carnes"); box.innerHTML = "";
+  (estado.carnes || []).forEach(c => {
+    const b = el("button", "op" + (carnesEscolhidas.includes(c) ? " on" : ""));
+    b.type = "button";
+    b.appendChild(icone(c, "e"));
+    b.appendChild(document.createTextNode(c));
+    b.onclick = () => {
+      carnesEscolhidas = carnesEscolhidas.includes(c) ? carnesEscolhidas.filter(x => x !== c) : carnesEscolhidas.concat(c);
+      desenharCarnes();
+    };
+    box.appendChild(b);
+  });
+  $("btnCarne").textContent = carnesEscolhidas.length ? "Próximo →" : "Pular →";
+}
+
+// ===== itens (cada um com uma pessoa só) =====
+function desenharItens(){
+  const meuNome = norm($("nome").value);
+  const box = $("itens"); box.innerHTML = "";
+  estado.itens.forEach(item => {
+    const dono = estado.respostas.find(r => r.vai && r.item === item);
+    const ehMeu = dono && norm(dono.nome) === meuNome && meuNome !== "";
+    const b = el("button", "op mini" + (itemEscolhido === item ? " on" : ""));
+    b.type = "button";
+    b.appendChild(el("span", "e", em(item)));
+    b.appendChild(document.createTextNode(item));
+    if (dono && !ehMeu){
+      b.disabled = true;
+      b.appendChild(el("small", "", "com " + dono.nome));
+      if (itemEscolhido === item) itemEscolhido = "";
+    }
+    b.onclick = () => { itemEscolhido = itemEscolhido === item ? "" : item; desenharItens(); };
+    box.appendChild(b);
+  });
+  const n = el("button", "op mini full" + (itemEscolhido === "" ? " on" : ""), "Só a carne e a bebida 👍");
+  n.type = "button";
+  n.onclick = () => { itemEscolhido = ""; desenharItens(); };
+  box.appendChild(n);
+}
+
+// ===== revisão =====
+function desenharRevisao(){
+  const box = $("rev"); box.innerHTML = "";
+  const linha = (k, v) => { const d = el("div"); d.appendChild(el("span", "", k)); d.appendChild(el("b", "", v)); box.appendChild(d); };
+  linha("Nome", $("nome").value.trim());
+  linha("Presença", vai ? "Vou 🤩" : "Não vou 😢");
+  if (vai){
+    linha("Pessoas", String(pessoas));
+    linha("Carne", carnesEscolhidas.length ? carnesEscolhidas.join(", ") : "—");
+    linha("Leva a mais", itemEscolhido ? em(itemEscolhido) + " " + itemEscolhido : "—");
+    if ($("outro").value.trim()) linha("Outra coisa", $("outro").value.trim());
+  }
+}
+
+// ===== aba "Quem vai" =====
+function corDe(nome){ let h = 0; for (const ch of norm(nome)) h = (h * 31 + ch.charCodeAt(0)) % 360; return "hsl(" + (h % 50 + 15) + " 90% " + (58 + h % 12) + "%)"; }
+function desenharLista(){
+  const sim = estado.respostas.filter(r => r.vai);
+  const nao = estado.respostas.filter(r => !r.vai);
+  const total = sim.reduce((t, r) => t + (r.pessoas || 1), 0);
+  const livres = estado.itens.filter(i => !sim.some(r => r.item === i)).length;
+  $("nPessoas").textContent = total;
+  $("nLivres").textContent = livres;
+  $("nNao").textContent = nao.length;
+  $("nTab").textContent = total;
+
+  const us = $("listaSim"); us.innerHTML = "";
+  if (!sim.length) us.appendChild(el("div", "vazio", "Ninguém confirmou ainda. Seja o primeiro! 🔥"));
+  sim.forEach((r, i) => {
+    const c = el("div", "pess"); c.style.animationDelay = (i * 40) + "ms";
+    const av = el("div", "av", r.nome.trim().charAt(0).toUpperCase()); av.style.background = corDe(r.nome);
+    const pi = el("div", "pi"); pi.appendChild(el("b", "", r.nome));
+    const tags = el("div", "tags");
+    tags.appendChild(el("span", "tg", "👥 " + (r.pessoas || 1)));
+    if (r.carne){ const t = el("span", "tg"); r.carne.split(", ").forEach((c, i) => { if (i) t.appendChild(document.createTextNode(" ")); t.appendChild(icone(c)); }); tags.appendChild(t); }
+    if (r.item) tags.appendChild(el("span", "tg dest", em(r.item) + " " + r.item));
+    if (r.outro) tags.appendChild(el("span", "tg dest", "✍️ " + r.outro));
+    pi.appendChild(tags);
+    if (r.sugestao) pi.appendChild(el("span", "sug", "💡 " + r.sugestao));
+    c.appendChild(av); c.appendChild(pi); us.appendChild(c);
+  });
+
+  const ui = $("listaItens"); ui.innerHTML = "";
+  estado.itens.forEach(item => {
+    const dono = sim.find(r => r.item === item);
+    const c = el("div", "itc " + (dono ? "ocupado" : "livre"));
+    c.appendChild(el("span", "e", em(item)));
+    const d = el("div"); d.appendChild(el("b", "", item)); d.appendChild(el("span", "", dono ? dono.nome : "livre"));
+    c.appendChild(d); ui.appendChild(c);
+  });
+
+  const un = $("listaNao"); un.innerHTML = "";
+  if (!nao.length) un.appendChild(el("span", "nchip", "ninguém 🎉"));
+  nao.forEach(r => un.appendChild(el("span", "nchip", r.nome)));
+}
+
+function aplicar(dados){
+  estado = { itens: dados.itens || [], carnes: dados.carnes || [], respostas: dados.respostas || [] };
+  if (passo === "item") desenharItens();
+  if (passo === "carne") desenharCarnes();
+  desenharLista();
+}
+
+// Se o nome já respondeu antes, traz a resposta anterior para alterar
+let ultimoNome = null;
+function preencherSeJaRespondeu(){
+  const atual = norm($("nome").value);
+  const r = estado.respostas.find(x => norm(x.nome) === atual);
+  $("avisoJa").classList.toggle("on", !!r);
+  const trocou = ultimoNome !== null && ultimoNome !== atual;
+  ultimoNome = atual;
+  if (!r){
+    if (trocou){ // outra pessoa no mesmo celular: começa do zero
+      vai = null; pessoas = 1; $("nPess").textContent = 1;
+      itemEscolhido = ""; carnesEscolhidas = []; $("sugestao").value = ""; $("outro").value = "";
+      $("bSim").classList.remove("on"); $("bNao").classList.remove("on");
+    }
+    return;
+  }
+  vai = r.vai;
+  pessoas = r.pessoas || 1; $("nPess").textContent = pessoas;
+  itemEscolhido = r.item || "";
+  carnesEscolhidas = r.carne ? r.carne.split(", ") : [];
+  $("sugestao").value = r.sugestao || "";
+  $("outro").value = r.outro || "";
+  $("bSim").classList.toggle("on", vai === true);
+  $("bNao").classList.toggle("on", vai === false);
+}
+
+async function carregar(){
+  desenharProgresso();
+  if (SCRIPT_URL.indexOf("http") !== 0){
+    mostrar("Configuração pendente: cole a URL do Apps Script em SCRIPT_URL no index.html.", "erro");
+    return;
+  }
+  try{
+    const r = await fetch(SCRIPT_URL);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const dados = await r.json();
+    if (!dados.ok) throw new Error(dados.erro || "resposta inválida");
+    aplicar(dados);
+    try{ const salvo = localStorage.getItem("churrasco_nome"); if (salvo && !$("nome").value) $("nome").value = salvo; }catch(_){}
+  }catch(e){
+    mostrar("Não consegui carregar a lista: " + e.message, "erro");
+  }
+}
+
+async function enviar(){
+  const nome = $("nome").value.trim();
+  if (!nome) { irPara("nome", -1); return mostrar("Digite seu nome.", "erro"); }
+  if (vai === null) { irPara("vai", -1); return mostrar("Escolha se você vai ou não.", "erro"); }
+
+  const corpo = {
+    nome,
+    vai,
+    pessoas: vai ? pessoas : 0,
+    item: vai ? itemEscolhido : "",
+    carne: vai ? carnesEscolhidas : [],
+    outro: vai ? $("outro").value.trim() : "",
+    sugestao: $("sugestao").value.trim()
+  };
+
+  const btn = $("enviar");
+  btn.disabled = true; btn.textContent = "Enviando…";
+  try{
+    // text/plain evita o bloqueio de CORS do Apps Script
+    const r = await fetch(SCRIPT_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(corpo) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const dados = await r.json();
+    if (dados.itens) aplicar(dados);
+    if (!dados.ok) { mostrar(dados.erro || "Erro ao salvar.", "erro"); return; }
+    try{ localStorage.setItem("churrasco_nome", nome); }catch(_){}
+    $("fimEmoji").textContent = vai ? "🔥" : "🌻";
+    $("fimTitulo").textContent = vai ? (dados.atualizado ? "Resposta atualizada!" : "Presença confirmada!") : (dados.atualizado ? "Resposta atualizada" : "Que pena!");
+    $("fimTexto").textContent = vai ? "Te esperamos sexta, 20/11, às 19h 🍖" : "Obrigado por avisar. Fica pra próxima! 🌻";
+    irPara("fim", 1);
+  }catch(e){
+    mostrar("Não consegui enviar: " + e.message, "erro");
+  }finally{
+    btn.disabled = false; btn.textContent = "Enviar resposta";
+  }
+}
+
+$("nome").addEventListener("keydown", e => { if (e.key === "Enter") proximo(); });
+carregar();
+</script>
+</body>
+</html>
